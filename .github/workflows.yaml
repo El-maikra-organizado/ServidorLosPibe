@@ -1,0 +1,43 @@
+name: Deploy to DockerHub Minecraft Image (Forge)
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  ENVIRONMENT_NAME: ${{ fromJSON('{"develop":"dev", "qa":"qa", "main":"prod", "devops":"devops"}')[github.head_ref || github.ref_name ] }}
+  IMAGE_NAME: minecraft_forge
+  
+jobs:
+  build-and-push: 
+    runs-on: ubuntu-20.04
+    steps:
+    
+    - uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build [Target App]
+      id: build-image-app
+      env:
+        IMAGE_TAG: test_forge
+        IMAGE_STAGE: app
+      run: |
+        DOCKER_BUILDKIT=1 docker build -t $IMAGE_TAG --target $IMAGE_STAGE -f .devops/dockerfile .
+        echo "image=$IMAGE_STAGE:${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+    - name: Push
+      uses: docker/build-push-action@v3
+      with:
+        file: dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME_API }}:latest, 
+          ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME_API }}:${{ env.ENVIRONMENT_NAME }}_${{ github.run_number }}
+        contex: .devops/dockerfile

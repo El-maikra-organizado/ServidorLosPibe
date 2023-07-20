@@ -1,0 +1,30 @@
+FROM openjdk:8-slim-bullseye as dependecies
+WORKDIR /.minecraft
+
+RUN apt-get update && \
+      apt-get -y install sudo
+RUN adduser --disabled-password --gecos '' docker
+RUN adduser docker sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER docker
+
+RUN sudo apt install default-jre -y
+RUN java -version 
+# RUN sudo apt update && apt -y upgrade
+# RUN apt apt install screen -y
+
+RUN cd /opt \
+    la -la \   
+    mkdir minecraft \
+    cd minecraft
+RUN java -jar forge-1.12.2-14.23.5.2860-installer.jar --installServer
+RUN cd /opt/minecraft && java -Xms1024M -Xmx2000M -jar /opt/minecraft/forge-1.12.2-14.23.5.2860.jar nogui 
+
+FROM java:openjdk-8-alpine as add_mods
+WORKDIR /.minecraft
+COPY --from=dependencies /.minecraft /.minecraft
+COPY /mods  /.minecraft./
+
+FROM java:openjdk-8-alpine as app
+# eula=true
+# nano eula.txt
