@@ -1,30 +1,30 @@
-FROM openjdk:8-slim-bullseye as dependecies
+FROM openjdk:8-slim-bullseye as dependencies
 WORKDIR /.minecraft
-
 RUN apt-get update && \
       apt-get -y install sudo
 RUN adduser --disabled-password --gecos '' docker
 RUN adduser docker sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
-
 RUN sudo apt install default-jre -y
-RUN java -version 
-# RUN sudo apt update && apt -y upgrade
-# RUN apt apt install screen -y
+RUN java -version clear
+RUN sudo apt install screen -y
+COPY minecraft_server.1.16.5.jar ./
+COPY forge-1.16.5-36.2.39-installer.jar ./
+RUN sudo java -Xms1024M -Xmx1024M -jar minecraft_server.1.16.5.jar
+RUN sudo rm eula.txt
+COPY ./eula.txt ./
+COPY ./Server/mods/ ./mods
+COPY ./Server/resourcepacks/ ./mods
+COPY ./Server/mods/ ./mods
+RUN sudo java -jar forge-1.16.5-36.2.39-installer.jar --installServer
+CMD sudo java -Xms1024M -Xmx1024M -jar minecraft_server.1.16.5.jar nogui
 
-RUN cd /opt \
-    la -la \   
-    mkdir minecraft \
-    cd minecraft
-RUN java -jar forge-1.12.2-14.23.5.2860-installer.jar --installServer
-RUN cd /opt/minecraft && java -Xms1024M -Xmx2000M -jar /opt/minecraft/forge-1.12.2-14.23.5.2860.jar nogui 
+# FROM openjdk:8-slim-bullseye as add_mods
+# WORKDIR /.minecraft
+# COPY --from=dependencies /.minecraft /.minecraft
+# COPY /Server/mods/*  /.minecraft./mods
 
-FROM java:openjdk-8-alpine as add_mods
-WORKDIR /.minecraft
-COPY --from=dependencies /.minecraft /.minecraft
-COPY /mods  /.minecraft./
-
-FROM java:openjdk-8-alpine as app
-# eula=true
-# nano eula.txt
+# FROM openjdk:8-slim-bullseye as app
+# # eula=true
+# # nano eula.txt
