@@ -1,4 +1,4 @@
-FROM openjdk:8-slim-bullseye as dependencies
+FROM openjdk:8-slim-bullseye as app
 WORKDIR /.minecraft
 RUN apt-get update && \
       apt-get -y install sudo
@@ -19,12 +19,3 @@ COPY ./Server/resourcepacks/ ./mods
 COPY ./Server/mods/ ./mods
 RUN sudo java -jar forge-1.16.5-36.2.39-installer.jar --installServer
 CMD sudo java -Xms1024M -Xmx1024M -jar minecraft_server.1.16.5.jar nogui
-
-# FROM openjdk:8-slim-bullseye as add_mods
-# WORKDIR /.minecraft
-# COPY --from=dependencies /.minecraft /.minecraft
-# COPY /Server/mods/*  /.minecraft./mods
-
-# FROM openjdk:8-slim-bullseye as app
-# # eula=true
-# # nano eula.txt
