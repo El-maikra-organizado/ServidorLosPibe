@@ -1,2 +1,13 @@
-## Docker command
-    * DOCKER_BUILDKIT=1 docker build -t minecraft --target dependecies -f dockerfile .
+## Docker build command
+    * DOCKER_BUILDKIT=1 docker build -t minecraft_server \
+    --build-arg FORGE_VERSION=1.16.5-36.2.39 \
+    --target app -f dockerfile .
+    
+    https://www.digitalocean.com/community/tutorials/how-to-create-a-minecraft-server-on-ubuntu-22-04
+
+## Docker start command
+    * docker run -p 25565:25565 --name minecraft_server_force minecraft_server:latest
+
+## Docker start command test
+    * docker run -p 25565:25565 -it --name minecraft_server_force minecraft_server:latest
+    
