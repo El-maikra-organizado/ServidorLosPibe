@@ -39,6 +39,6 @@ jobs:
       with:
         file: dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME_API }}:latest, 
-          ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME_API }}:${{ env.ENVIRONMENT_NAME }}_${{ github.run_number }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest, 
+          ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.ENVIRONMENT_NAME }}_${{ github.run_number }}
         contex: .devops/dockerfile
