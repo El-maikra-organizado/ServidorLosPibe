@@ -31,7 +31,7 @@ jobs:
         IMAGE_STAGE: app
         FORGE_VERSION: 1.16.5-36.2.39
       run: |
-        DOCKER_BUILDKIT=1 docker build -t $IMAGE_TAG --target $IMAGE_STAGE --build-arg FORGE_VERSION=$FORGE_VERSION -f .devops/dockerfile .
+        DOCKER_BUILDKIT=1 docker build -t $IMAGE_NAME --target $IMAGE_STAGE --build-arg FORGE_VERSION=$FORGE_VERSION -f .devops/dockerfile .
         echo "image=$IMAGE_STAGE:${{ github.run_number }}" >> $GITHUB_OUTPUT
 
     - name: Push
