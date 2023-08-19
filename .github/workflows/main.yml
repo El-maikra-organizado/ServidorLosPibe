@@ -27,7 +27,7 @@ jobs:
     - name: Build [Target App]
       id: build-image-app
       env:
-        IMAGE_TAG: test_forge
+        IMAGE_TAG: latest
         IMAGE_STAGE: app
         FORGE_VERSION: 1.16.5-36.2.39
       run: |
