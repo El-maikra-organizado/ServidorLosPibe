@@ -37,8 +37,8 @@ jobs:
     - name: Push
       uses: docker/build-push-action@v3
       with:
-        file: dockerfile
+        file: .devops/dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest, 
           ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.ENVIRONMENT_NAME }}_${{ github.run_number }}
-        contex: .devops/dockerfile
+        contex: .
