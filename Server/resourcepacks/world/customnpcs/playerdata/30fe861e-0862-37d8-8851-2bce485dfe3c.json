@@ -1,0 +1,60 @@
+{
+    "TransportData": [
+        {
+            "Transport": 1
+        },
+        {
+            "Transport": 2
+        },
+        {
+            "Transport": 3
+        }
+    ],
+    "NpcsTimers": [
+    ],
+    "FactionData": [
+        {
+            "Points": 2000,
+            "Faction": 0
+        },
+        {
+            "Points": 1000,
+            "Faction": 1
+        },
+        {
+            "Points": 0,
+            "Faction": 2
+        },
+        {
+            "Points": 5000,
+            "Faction": 3
+        }
+    ],
+    "BankData": [
+    ],
+    "ItemGiversList": [
+    ],
+    "QuestData": {
+        "CompletedQuests": [
+        ],
+        "ActiveQuests": [
+        ]
+    },
+    "PlayerCompanionId": 0,
+    "DialogData": [
+        {
+            "Dialog": 6
+        },
+        {
+            "Dialog": 8
+        }
+    ],
+    "ItemGiverChained": [
+    ],
+    "MailData": [
+    ],
+    "PlayerName": "ZeroReverse",
+    "UUID": "30fe861e-0862-37d8-8851-2bce485dfe3c",
+    "ScriptStoreddata": {
+    }
+}
