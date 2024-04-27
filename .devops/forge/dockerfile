@@ -1,0 +1,36 @@
+FROM adoptopenjdk:8-jre-hotspot as app
+WORKDIR /minecraft_server
+ARG FORGE_VERSION
+ENV FORGE_VERSION ${FORGE_VERSION}
+ADD "https://files.minecraftforge.net/maven/net/minecraftforge/forge/${FORGE_VERSION}/forge-${FORGE_VERSION}-installer.jar" forge-installer.jar
+RUN apt-get update && \
+    apt-get -y install sudo && \
+    adduser --disabled-password --gecos '' docker && \
+    adduser docker sudo && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER docker
+RUN sudo apt-get install wget -y
+RUN sudo wget https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
+RUN sudo mv server.jar minecraft_server.1.16.5.jar
+RUN ls -al
+# Instalar dependencias requeridas para el servidor
+RUN sudo apt-get -y install screen && \
+    sudo apt-get -y install default-jre
+
+# Copiar los archivos necesarios al directorio del servidor
+# COPY minecraft_server.1.16.5.jar ./
+
+# Instalar el servidor de Minecraft con Forge
+RUN java -jar minecraft_server.1.16.5.jar
+COPY ./eula.txt ./
+RUN sudo java -jar forge-installer.jar --installServer
+
+
+# COPY ./Server/mods/ ./mods
+# COPY ./Server/resourcepacks/ ./resourcepacks
+# RUN sudo mkdir /world   
+# COPY ./Server/saves/El_wiwi/* ./world/
+
+EXPOSE 25565
+CMD sudo java -Xms1024M -Xmx1024M -jar forge-1.16.5-36.2.39.jar
+CMD cat /etc/*-release
